@@ -1,0 +1,46 @@
+MIT License
+
+Copyright (c) 2026 Atelier
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Bundled third-party skills
+
+`bundled/skills/` contains third-party skill packages redistributed for convenience.
+Each retains its own licence, stated in the upstream package where one is present:
+
+| Skill | Upstream | Licence |
+|---|---|---|
+| `ai-ui-ux-motion-engine` | github.com/OpaceDigitalAgency/skills | see package |
+| `awwwards-animations` | github.com/devmartinese/awwwards-animations-skill | see package |
+| `cinematic-gsap-lenis-motion-system` | github.com/mengto/skills | see package |
+| `gsap-core`, `gsap-scrolltrigger`, `gsap-react` | github.com/greensock/gsap-skills | see package |
+| `vercel-react-best-practices` | github.com/vercel-labs/agent-skills | see package |
+| `scroll-craft` | github.com/nateherkai/scroll-craft | MIT |
+| `stripe-best-practices` | github.com/stripe/ai | see package |
+| `claude-security` | github.com/anthropics/claude-plugins-official | see package |
+| `seo-*` | github.com/every-app/open-seo | see package |
+| `hyperframes-*`, `media-use`, `general-video`, … | github.com/heygen-com/hyperframes | Apache-2.0 |
+| `remotion-*` | github.com/remotion-dev/skills | see package |
+| `ui-ux-pro-max` | github.com/nextlevelbuilder/ui-ux-pro-max-skill | see package |
+
+Skills whose upstream is not public are redistributed as-is from the author's working copy.
+Verify licence terms before redistribution outside your own use.

@@ -1,0 +1,159 @@
+# Atelier
+
+> Domain routers that dispatch agent skills to the right specialist.
+> Invoke one router. It pulls in the forty specialists it needs — the user never names a skill again.
+
+Repository: https://github.com/atelier-skills/atelier
+Version: 1.0.0 · Licence: MIT · Node 18+
+
+## What this plugin is
+
+Atelier contains **8 router skills**. Each router is a short map of one professional domain:
+it knows every specialist skill in that domain, picks the right lead for the job, adds at most
+two supporting skills, and hands off to another router when work crosses a boundary.
+
+The plugin ships with **36 specialist skills bundled inside the repository** — every skill whose
+upstream was never public, which therefore travels with the plugin rather than being fetched.
+The remaining 67 are cloned from public GitHub sources at install time.
+
+Total dependency surface: **118 skills across 8 routers**. Plugin payload: ~8MB.
+
+## Install
+
+Preferred — from the repository, offline-first:
+
+```bash
+git clone https://github.com/atelier-skills/atelier
+cd atelier
+node install.mjs
+```
+
+One line, no clone:
+
+```bash
+npx atelier install
+```
+
+Already have the files (repo unreachable, air-gapped, or downloaded as an archive):
+
+```bash
+node install.mjs --root ~/.agents/skills
+```
+
+The installer detects the host agent and writes to the correct skill root:
+
+| Agent | Destination |
+|---|---|
+| opencode | `~/.config/opencode/skills` |
+| Claude Code | `~/.claude/skills` |
+| generic agents | `~/.agents/skills` |
+| cursor | `~/.cursor/skills` |
+| codex | `~/.codex/skills` |
+
+Override with `--agent <name>` or `--root <path>`.
+**Skills only register at agent startup — restart the agent after installing.**
+
+### Installer flags
+
+| Flag | Effect |
+|---|---|
+| `--offline` | Private bundled skills only. Zero network requests. |
+| `--check` | Report what would happen. Installs nothing. |
+| `--force` | Overwrite existing skills. |
+| `--list` | List routers and their dependency counts. |
+| `--json` | Machine-readable summary on stdout. |
+| `--in-place` | Install the routers into this repo instead of a skill root. |
+
+Install one router: `node install.mjs web-design`
+
+## The routers
+
+| Router | Skills | What it does |
+|---|---|---|
+| `web-design` | 46 | Landing pages, portfolios, redesigns, design systems, UI, scroll/cinematic motion. Routes by job type. |
+| `video-production` | 25 | HTML-to-video (HyperFrames) and React video (Remotion). **Routes by input type** — URL, PR, topic, audio, or existing clip. |
+| `seo` | 12 | Ordered pipeline: audit → keywords → clustering → competitors → backlinks → AI visibility → report. |
+| `backend` | 15 | APIs, data, auth, architecture, refactors, legacy code, issue backlogs. |
+| `payments` | 1 + 6 refs | Stripe. Payments, Connect, Billing, Tax, Security, Treasury. |
+| `security` | 1 + 8 agents | Repo and diff scanning, verified patch generation, secret redaction. |
+| `vibe-code` | 4 | Fast path from a vague idea to something running. Skips heavyweight process by design. |
+| `ship-it` | 6 | Process-to-result spine: decide → plan → build → verify → secure → perform → ship. |
+
+## Self-installing behaviour
+
+Each `SKILL.md` contains an `## AI Installation` section generated from `deps.json`. When a
+router is invoked on an incomplete stack, the agent is instructed to:
+
+1. run `node install.mjs <router> --check` to find gaps,
+2. run `node install.mjs <router>` to fill them,
+3. report honestly what is still missing rather than proceeding silently.
+
+**Hosts without plugin or shell support:** the router instructs the agent to name the missing
+skills and ask the user to run the command. It is explicitly forbidden from claiming a skill
+is available when it is not.
+
+Hosts running opencode additionally load `.opencode/plugins/atelier.ts`, which injects the
+router list into the system prompt and detects a router running with a missing dependency.
+
+## Host support
+
+| Host | Skills | Plugin hook | Security subagents |
+|---|---|---|---|
+| opencode | yes | yes (`atelier.ts`) | yes, auto-installed to `~/.config/opencode/agent` |
+| Claude Code | yes | yes (`plugin.json` + `marketplace.json`) | yes, auto-installed |
+| cursor / codex / windsurf / gemini | yes | no — fallback path documented | manual |
+| anything else | yes, via `--root` | no | manual |
+
+## How skills arrive
+
+There are exactly two paths, and neither is a failure case:
+
+| How | Count | Network | Behaviour |
+|---|---|---|---|
+| **Bundled in the repo** | 36 | none | Skills whose upstream was never public. They ship inside `bundled/skills/` so the plugin is self-contained. |
+| **Fetched from upstream** | 67 | yes | Cloned from the declared public GitHub source at install time. |
+
+**Private-origin skills are not a gap.** Where the author's source was never public, the skill
+ships inside the repository instead of being fetched. That is the supported path, not a
+workaround — and it is why the repo carries them rather than linking out.
+
+Resolution order for every dependency:
+
+```
+already installed  ->  bundled/skills/  ->  declared public GitHub source
+```
+
+| Flag | Network | Effect |
+|---|---|---|
+| *(default)* | as needed | Private bundled, public fetched |
+| `--offline` | **none at all** | Private bundled only; public skills reported as unavailable |
+| `--prefer-network` | yes | Public skills always refreshed from upstream |
+
+Two skills are deliberately never bundled because of size: `img2threejs` (39.9MB) and
+`impeccable` (16MB). Both are optional quality gates, not core specialists.
+
+## Files
+
+```
+atelier/
+├── install.mjs                  installer, agent detection, offline-first resolution
+├── deps.json                    dependency manifest for all 118 skills
+├── llms.txt                     this file
+├── README.md                    full documentation
+├── BRAND.md                     naming, palette, voice
+├── .claude-plugin/
+│   ├── plugin.json              Claude Code manifest
+│   └── marketplace.json         marketplace entry
+├── .opencode/plugins/atelier.ts opencode plugin
+├── skills/                      the 8 routers
+├── agents/                      8 cs-* security subagents
+├── bundled/skills/              36 private-origin skills, no network needed
+└── scripts/inject-install.mjs   regenerates the AI Installation sections
+```
+
+## Safety
+
+The installer never overwrites an existing skill without `--force`, never deletes outside the
+target root, and cleans up its own temporary clone directory. `--check` writes nothing.
+Network access only occurs for skills that are neither installed nor bundled, and never at
+all with `--offline`.

@@ -1,0 +1,621 @@
+{
+  "$schema": "./deps.schema.json",
+  "name": "atelier",
+  "version": "1.0.0",
+  "description": "Domain routers that dispatch agent skills to the right specialist.",
+  "skillRoots": {
+    "opencode": "~/.config/opencode/skills",
+    "claude": "~/.claude/skills",
+    "agents": "~/.agents/skills",
+    "cursor": "~/.cursor/skills",
+    "codex": "~/.codex/skills",
+    "windsurf": "~/.codeium/windsurf/skills",
+    "gemini": "~/.gemini/skills"
+  },
+  "preferenceOrder": [
+    "agents",
+    "opencode",
+    "claude",
+    "cursor",
+    "codex",
+    "windsurf",
+    "gemini"
+  ],
+  "bundling": {
+    "dir": "bundled/skills",
+    "exclude": [
+      "img2threejs",
+      "impeccable"
+    ],
+    "note": "Private-origin skills only (36). Public skills are cloned from their upstream GitHub at install time. Resolution order: already-installed -> bundled (private) -> public GitHub. Offline installs therefore cover private skills only.",
+    "excludeReason": {
+      "img2threejs": "39.9MB of reference imagery for 3D model generation. Niche; fetched on demand.",
+      "impeccable": "16MB audit corpus. Optional quality gate; fetched on demand."
+    },
+    "count": 36,
+    "strategy": "private-only"
+  },
+  "postInstall": [
+    {
+      "skill": "claude-security",
+      "why": "Its SKILL.md references ${CLAUDE_PLUGIN_ROOT}, which is unset outside Claude Code.",
+      "action": "rewrite CLAUDE_PLUGIN_ROOT in .md files to the installed absolute path"
+    }
+  ],
+  "repo": "https://github.com/atelier-skills/atelier",
+  "routers": {
+    "web-design": {
+      "title": "Web Design",
+      "summary": "Landing pages, portfolios, redesigns, design systems, UI, and scroll/cinematic motion.",
+      "requires": [
+        {
+          "skill": "ai-ui-ux-motion-engine",
+          "source": "OpaceDigitalAgency/skills@ai-ui-ux-motion-engine"
+        },
+        {
+          "skill": "awwwards-animations",
+          "source": "devmartinese/awwwards-animations-skill@awwwards-animations"
+        },
+        {
+          "skill": "cinematic-gsap-lenis-motion-system",
+          "source": "mengto/skills@cinematic-gsap-lenis-motion-system"
+        },
+        {
+          "skill": "gsap-core",
+          "source": "greensock/gsap-skills@gsap-core"
+        },
+        {
+          "skill": "gsap-scrolltrigger",
+          "source": "greensock/gsap-skills@gsap-scrolltrigger"
+        },
+        {
+          "skill": "gsap-react",
+          "source": "greensock/gsap-skills@gsap-react"
+        },
+        {
+          "skill": "vercel-react-best-practices",
+          "source": "vercel-labs/agent-skills@vercel-react-best-practices"
+        },
+        {
+          "skill": "design-md",
+          "source": "google-labs-code/stitch-skills@design-md"
+        },
+        {
+          "skill": "fixing-motion-performance",
+          "source": "ibelick/ui-skills@fixing-motion-performance"
+        },
+        {
+          "skill": "scroll-craft",
+          "source": "github:nateherkai/scroll-craft",
+          "subpath": "plugins/nateherk-design/skills/scroll-craft"
+        },
+        {
+          "skill": "ui-ux-pro-max",
+          "source": "nextlevelbuilder/ui-ux-pro-max-skill@ui-ux-pro-max"
+        },
+        {
+          "skill": "apple-design",
+          "source": "emilkowalski/skills@apple-design"
+        },
+        {
+          "skill": "emil-design-eng",
+          "source": "emilkowalski/skills@emil-design-eng"
+        },
+        {
+          "skill": "review-animations",
+          "source": "emilkowalski/skills@review-animations"
+        },
+        {
+          "skill": "improve-animations",
+          "source": "emilkowalski/skills@improve-animations"
+        },
+        {
+          "skill": "find-animation-opportunities",
+          "source": "emilkowalski/skills@find-animation-opportunities"
+        },
+        {
+          "skill": "animation-vocabulary",
+          "source": "emilkowalski/skills@animation-vocabulary"
+        },
+        {
+          "skill": "animate",
+          "source": "emilkowalski/skills@animate"
+        },
+        {
+          "skill": "gpt-taste",
+          "source": "leonxlnx/taste-skill@gpt-taste"
+        },
+        {
+          "skill": "high-end-visual-design",
+          "source": "leonxlnx/taste-skill@high-end-visual-design"
+        },
+        {
+          "skill": "brandkit",
+          "source": "leonxlnx/taste-skill@brandkit"
+        },
+        {
+          "skill": "stitch-design-taste",
+          "source": "leonxlnx/taste-skill@stitch-design-taste"
+        },
+        {
+          "skill": "design-taste-frontend",
+          "source": "manual"
+        },
+        {
+          "skill": "design-taste-frontend-v1",
+          "source": "manual"
+        },
+        {
+          "skill": "ptfs-va-website-builder",
+          "source": "manual"
+        },
+        {
+          "skill": "redesign-existing-projects",
+          "source": "manual"
+        },
+        {
+          "skill": "ultimate-frontend-skills",
+          "source": "manual"
+        },
+        {
+          "skill": "industrial-brutalist-ui",
+          "source": "manual"
+        },
+        {
+          "skill": "minimalist-ui",
+          "source": "manual"
+        },
+        {
+          "skill": "image-to-code",
+          "source": "manual"
+        },
+        {
+          "skill": "imagegen-frontend-web",
+          "source": "manual"
+        },
+        {
+          "skill": "imagegen-frontend-mobile",
+          "source": "manual"
+        },
+        {
+          "skill": "img2threejs",
+          "source": "manual"
+        },
+        {
+          "skill": "visual-research",
+          "source": "manual"
+        },
+        {
+          "skill": "prototype",
+          "source": "manual"
+        },
+        {
+          "skill": "pick-ui-library",
+          "source": "manual"
+        },
+        {
+          "skill": "ask-sonner",
+          "source": "manual"
+        },
+        {
+          "skill": "slides",
+          "source": "manual"
+        },
+        {
+          "skill": "enhance-prompt",
+          "source": "manual"
+        },
+        {
+          "skill": "banner-design",
+          "source": "manual"
+        },
+        {
+          "skill": "design-system",
+          "source": "manual"
+        },
+        {
+          "skill": "design",
+          "source": "manual"
+        },
+        {
+          "skill": "design-is",
+          "source": "manual"
+        },
+        {
+          "skill": "ui-styling",
+          "source": "manual"
+        },
+        {
+          "skill": "impeccable",
+          "source": "manual"
+        },
+        {
+          "skill": "impeccable-design-polish",
+          "source": "manual"
+        }
+      ],
+      "mcp": [
+        {
+          "name": "magicui",
+          "url": "https://api.magicui.design/mcp",
+          "optional": true
+        },
+        {
+          "name": "chrome-devtools",
+          "command": "npx -y @devtools-ds/chrome-devtools-mcp",
+          "optional": true
+        },
+        {
+          "name": "playwright",
+          "command": "npx -y @playwright/mcp",
+          "optional": true
+        }
+      ],
+      "handoffs": [
+        "video-production"
+      ]
+    },
+    "video-production": {
+      "title": "Video Production",
+      "summary": "HTML-to-video rendering (HyperFrames), React video (Remotion), and social promo.",
+      "requires": [
+        {
+          "skill": "hyperframes",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes"
+        },
+        {
+          "skill": "general-video",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/general-video"
+        },
+        {
+          "skill": "hyperframes-core",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-core"
+        },
+        {
+          "skill": "hyperframes-animation",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-animation"
+        },
+        {
+          "skill": "hyperframes-creative",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-creative"
+        },
+        {
+          "skill": "hyperframes-registry",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-registry"
+        },
+        {
+          "skill": "hyperframes-keyframes",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-keyframes"
+        },
+        {
+          "skill": "hyperframes-audio",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-audio"
+        },
+        {
+          "skill": "hyperframes-cli",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-cli"
+        },
+        {
+          "skill": "hyperframes-studio",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/hyperframes-studio"
+        },
+        {
+          "skill": "media-use",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/media-use"
+        },
+        {
+          "skill": "product-launch-video",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/product-launch-video"
+        },
+        {
+          "skill": "pr-to-video",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/pr-to-video"
+        },
+        {
+          "skill": "faceless-explainer",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/faceless-explainer"
+        },
+        {
+          "skill": "music-to-video",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/music-to-video"
+        },
+        {
+          "skill": "talking-head-recut",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/talking-head-recut"
+        },
+        {
+          "skill": "slideshow",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/slideshow"
+        },
+        {
+          "skill": "motion-graphics",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/motion-graphics"
+        },
+        {
+          "skill": "embedded-captions",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/embedded-captions"
+        },
+        {
+          "skill": "figma",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/figma"
+        },
+        {
+          "skill": "remotion-to-hyperframes",
+          "source": "github:heygen-com/hyperframes",
+          "subpath": "skills/remotion-to-hyperframes"
+        },
+        {
+          "skill": "remotion-best-practices",
+          "source": "remotion-dev/skills@remotion-best-practices"
+        },
+        {
+          "skill": "remotion-markup",
+          "source": "remotion-dev/skills@remotion-markup"
+        },
+        {
+          "skill": "remotion-maps",
+          "source": "remotion-dev/skills@remotion-maps"
+        },
+        {
+          "skill": "remotion-captions",
+          "source": "remotion-dev/skills@remotion-captions"
+        }
+      ],
+      "notes": "media-use needs the heygen CLI for bgm/sfx resolution. Set HEYGEN_API_BASE to route through a host app.",
+      "handoffs": [
+        "web-design"
+      ]
+    },
+    "seo": {
+      "title": "SEO",
+      "summary": "Keyword research, clustering, audits, competitor analysis, backlinks, AI visibility, client reports.",
+      "requires": [
+        {
+          "skill": "seo-project-setup",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/seo-project-setup"
+        },
+        {
+          "skill": "seo-audit",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/seo-audit"
+        },
+        {
+          "skill": "keyword-research",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/keyword-research"
+        },
+        {
+          "skill": "keyword-clustering",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/keyword-clustering"
+        },
+        {
+          "skill": "competitor-analysis",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/competitor-analysis"
+        },
+        {
+          "skill": "competitive-landscape",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/competitive-landscape"
+        },
+        {
+          "skill": "link-prospecting",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/link-prospecting"
+        },
+        {
+          "skill": "ai-visibility-audit",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/ai-visibility-audit"
+        },
+        {
+          "skill": "ai-prompt-research",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/ai-prompt-research"
+        },
+        {
+          "skill": "local-seo",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/local-seo"
+        },
+        {
+          "skill": "seo-coach",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/seo-coach"
+        },
+        {
+          "skill": "seo-report",
+          "source": "github:every-app/open-seo",
+          "subpath": "plugins/openseo/skills/seo-report"
+        }
+      ],
+      "handoffs": []
+    },
+    "backend": {
+      "title": "Backend",
+      "summary": "APIs, data, auth, architecture, refactors, legacy codebases, issue backlogs.",
+      "requires": [
+        {
+          "skill": "smart-explore",
+          "source": "manual"
+        },
+        {
+          "skill": "learn-codebase",
+          "source": "manual"
+        },
+        {
+          "skill": "pathfinder",
+          "source": "manual"
+        },
+        {
+          "skill": "think",
+          "source": "manual"
+        },
+        {
+          "skill": "ponytail",
+          "source": "manual"
+        },
+        {
+          "skill": "ponytail-audit",
+          "source": "manual"
+        },
+        {
+          "skill": "ponytail-review",
+          "source": "manual"
+        },
+        {
+          "skill": "ponytail-debt",
+          "source": "manual"
+        },
+        {
+          "skill": "oh-my-issues",
+          "source": "manual"
+        },
+        {
+          "skill": "standup",
+          "source": "manual"
+        },
+        {
+          "skill": "full-output-enforcement",
+          "source": "manual"
+        },
+        {
+          "skill": "make-plan",
+          "source": "obra/superpowers@writing-plans"
+        },
+        {
+          "skill": "do",
+          "source": "manual"
+        },
+        {
+          "skill": "executing-plans",
+          "source": "obra/superpowers@executing-plans"
+        },
+        {
+          "skill": "subagent-driven-development",
+          "source": "obra/superpowers@subagent-driven-development"
+        }
+      ]
+    },
+    "payments": {
+      "title": "Payments",
+      "summary": "Stripe integration, checkout, subscriptions, webhooks, tax/VAT, PCI-safe flows.",
+      "requires": [
+        {
+          "skill": "stripe-best-practices",
+          "source": "github:stripe/ai",
+          "subpath": "skills/stripe-best-practices"
+        }
+      ],
+      "env": [
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET"
+      ],
+      "notes": "Never commit keys. Verify webhook signatures and use idempotency keys on every write."
+    },
+    "security": {
+      "title": "Security",
+      "summary": "Repository and diff scanning, auth/secrets/injection review, verified patch generation.",
+      "requires": [
+        {
+          "skill": "claude-security",
+          "source": "github:anthropics/claude-plugins-official",
+          "subpath": "plugins/claude-security/skills/claude-security"
+        }
+      ],
+      "agents": [
+        "cs-explore",
+        "cs-scan-inventory",
+        "cs-scan-researcher",
+        "cs-scan-verifier",
+        "cs-scan-loader",
+        "cs-scan-redactor",
+        "cs-patch-generator",
+        "cs-patch-verifier"
+      ],
+      "notes": "The Claude Code Workflow orchestrator does not run in opencode. Dispatch the cs-* agents manually in order: inventory -> research -> verify -> generate -> verify patch."
+    },
+    "vibe-code": {
+      "title": "Vibe Code",
+      "summary": "Fast path from a vague idea to something running. Deliberately skips heavyweight process.",
+      "requires": [
+        {
+          "skill": "brainstorming",
+          "source": "obra/superpowers@brainstorming"
+        },
+        {
+          "skill": "ponytail",
+          "source": "manual"
+        },
+        {
+          "skill": "design-taste-frontend",
+          "source": "manual"
+        },
+        {
+          "skill": "vercel-react-best-practices",
+          "source": "vercel-labs/agent-skills@vercel-react-best-practices"
+        }
+      ]
+    },
+    "ship-it": {
+      "title": "Ship It",
+      "summary": "Process-to-result delivery: decide, plan, build, verify, secure, perform, ship.",
+      "requires": [
+        {
+          "skill": "brainstorming",
+          "source": "obra/superpowers@brainstorming"
+        },
+        {
+          "skill": "writing-plans",
+          "source": "obra/superpowers@writing-plans"
+        },
+        {
+          "skill": "executing-plans",
+          "source": "obra/superpowers@executing-plans"
+        },
+        {
+          "skill": "verification-before-completion",
+          "source": "obra/superpowers@verification-before-completion"
+        },
+        {
+          "skill": "release-director",
+          "source": "manual"
+        },
+        {
+          "skill": "version-bump",
+          "source": "manual"
+        }
+      ],
+      "handoffs": [
+        "web-design",
+        "video-production",
+        "seo",
+        "payments",
+        "security",
+        "backend"
+      ]
+    }
+  }
+}

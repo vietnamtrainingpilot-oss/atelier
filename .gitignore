@@ -1,0 +1,26 @@
+# Dependencies / scratch
+node_modules/
+.atelier-tmp/
+*.log
+npm-debug.log*
+
+# Installer output markers
+**/.atelier-installed
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Local environment — never commit
+.env
+.env.*
+!.env.example
+
+# Windows
+*.lnk
