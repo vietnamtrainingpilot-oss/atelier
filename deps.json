@@ -42,7 +42,7 @@
       "action": "rewrite CLAUDE_PLUGIN_ROOT in .md files to the installed absolute path"
     }
   ],
-  "repo": "https://github.com/atelier-skills/atelier",
+  "repo": "https://github.com/vietnamtrainingpilot-oss/atelier",
   "routers": {
     "web-design": {
       "title": "Web Design",

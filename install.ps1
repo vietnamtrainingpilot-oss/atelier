@@ -1,13 +1,13 @@
 # Atelier — one-line install (Windows PowerShell)
 #
-#   irm https://raw.githubusercontent.com/atelier-skills/atelier/main/install.ps1 | iex
+#   irm https://raw.githubusercontent.com/vietnamtrainingpilot-oss/atelier/main/install.ps1 | iex
 #
 # Clones the repo to a temp dir and runs the installer. The plugin ships 103 skills
 # bundled, so this works even if the upstream skills are unreachable.
 
 $ErrorActionPreference = 'Stop'
 
-$Repo = if ($env:ATELIER_REPO) { $env:ATELIER_REPO } else { 'https://github.com/atelier-skills/atelier' }
+$Repo = if ($env:ATELIER_REPO) { $env:ATELIER_REPO } else { 'https://github.com/vietnamtrainingpilot-oss/atelier' }
 $Dir  = if ($env:ATELIER_DIR)  { $env:ATELIER_DIR }  else { Join-Path $env:USERPROFILE '.atelier' }
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {

@@ -6,7 +6,7 @@
 
 Invoke one router. It pulls in the forty specialists it needs — you never name a skill again.
 
-[![version](https://img.shields.io/badge/version-1.0.0-informational)](https://github.com/atelier-skills/atelier)
+[![version](https://img.shields.io/badge/version-1.0.0-informational)](https://github.com/vietnamtrainingpilot-oss/atelier)
 [![license](https://img.shields.io/badge/license-MIT-blue)](./.claude-plugin/plugin.json)
 
 </div>
@@ -32,7 +32,7 @@ you ──▶ web-design ──▶ ai-ui-ux-motion-engine + ui-ux-pro-max + awww
 ## Install
 
 ```bash
-git clone https://github.com/atelier-skills/atelier
+git clone https://github.com/vietnamtrainingpilot-oss/atelier
 cd atelier
 node install.mjs              # everything
 node install.mjs web-design   # one router

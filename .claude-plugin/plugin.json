@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Domain routers that dispatch agent skills to the right specialist. Web design, video, SEO, backend, payments, security — one entry point each.",
   "author": { "name": "Atelier" },
-  "homepage": "https://github.com/atelier-skills/atelier",
-  "repository": "https://github.com/atelier-skills/atelier",
+  "homepage": "https://github.com/vietnamtrainingpilot-oss/atelier",
+  "repository": "https://github.com/vietnamtrainingpilot-oss/atelier",
   "license": "MIT",
   "keywords": ["skills", "router", "dispatch", "web-design", "video", "seo", "backend", "payments", "security"]
 }

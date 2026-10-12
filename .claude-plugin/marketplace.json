@@ -2,7 +2,7 @@
   "name": "atelier",
   "owner": {
     "name": "Atelier",
-    "url": "https://github.com/atelier-skills"
+    "url": "https://github.com/vietnamtrainingpilot-oss"
   },
   "metadata": {
     "description": "Domain routers that dispatch agent skills to the right specialist.",
@@ -15,7 +15,7 @@
       "description": "Eight domain routers — web-design, video-production, seo, backend, payments, security, vibe-code, ship-it — that each dispatch to their own set of specialist skills. Ships with 103 skills bundled for offline install.",
       "version": "1.0.0",
       "author": { "name": "Atelier" },
-      "homepage": "https://github.com/atelier-skills/atelier",
+      "homepage": "https://github.com/vietnamtrainingpilot-oss/atelier",
       "license": "MIT",
       "keywords": ["router", "dispatch", "skills", "web-design", "video", "seo", "backend", "security"]
     }

@@ -3,7 +3,7 @@
 > Domain routers that dispatch agent skills to the right specialist.
 > Invoke one router. It pulls in the forty specialists it needs — the user never names a skill again.
 
-Repository: https://github.com/atelier-skills/atelier
+Repository: https://github.com/vietnamtrainingpilot-oss/atelier
 Version: 1.0.0 · Licence: MIT · Node 18+
 
 ## What this plugin is
@@ -23,7 +23,7 @@ Total dependency surface: **118 skills across 8 routers**. Plugin payload: ~8MB.
 Preferred — from the repository, offline-first:
 
 ```bash
-git clone https://github.com/atelier-skills/atelier
+git clone https://github.com/vietnamtrainingpilot-oss/atelier
 cd atelier
 node install.mjs
 ```
