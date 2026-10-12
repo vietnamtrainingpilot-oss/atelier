@@ -4,7 +4,7 @@
 
 **Domain routers that dispatch agent skills to the right specialist.**
 
-Invoke one router. It pulls in the forty specialists it needs — you never name a skill again.
+Invoke one router. It dispatches to the specialists it needs — you never name a skill again.
 
 [![version](https://img.shields.io/badge/version-1.0.0-informational)](https://github.com/vietnamtrainingpilot-oss/atelier)
 [![license](https://img.shields.io/badge/license-MIT-blue)](./.claude-plugin/plugin.json)
@@ -40,18 +40,50 @@ node install.mjs --check      # report only, change nothing
 node install.mjs --list       # what's available
 ```
 
+Or skip the clone — one line clones the repo to `~/.atelier` and runs the installer:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/vietnamtrainingpilot-oss/atelier/main/install.sh | bash
+```
+
+```powershell
+irm https://raw.githubusercontent.com/vietnamtrainingpilot-oss/atelier/main/install.ps1 | iex
+```
+
 | Flag | Effect |
 |---|---|
+| `--offline` | Bundled skills only. Zero network requests. |
+| `--prefer-network` | Refresh public skills from upstream even when a bundled copy exists. |
 | `--check` | Report what would happen. Installs nothing. |
 | `--force` | Overwrite existing skills. |
-| `--agent <name>` | `opencode` · `claude` · `cursor` · `codex` · `agents` |
+| `--agent <name>` | `opencode` · `claude` · `cursor` · `codex` · `agents` · `windsurf` · `gemini` |
 | `--root <path>` | Install somewhere else entirely. |
-| `--list` | List routers. |
+| `--list` | List routers and their dependency counts. |
+| `--json` | Machine-readable summary on stdout. |
+| `--in-place` | Install the routers into this repo instead of a skill root. |
 
-Auto-detects the host and writes to the right skill root
-(`~/.config/opencode/skills`, `~/.claude/skills`, `~/.agents/skills`, …).
-Falls back through a preference chain if your agent's root doesn't exist.
-**Restart your agent afterwards** — skills only register at startup.
+### Where things land, per host
+
+Auto-detects the host (`opencode` → `claude` → `cursor` → `codex` → `agents`,
+first match wins; `--agent <name>` overrides) and writes to that host's root:
+
+| Host | Skills | Also written |
+|---|---|---|
+| `opencode` | `~/.config/opencode/skills` | plugin → `~/.config/opencode/plugins/atelier.ts`; security agents → `~/.config/opencode/agent/` |
+| `claude` | `~/.claude/skills` | security agents → `~/.claude/agents/`; the `.claude-plugin/` manifest registers it in Claude Code |
+| `cursor` | `~/.cursor/skills` | — |
+| `codex` | `~/.codex/skills` | — |
+| `agents` | `~/.agents/skills` | — (fallback when nothing else matches) |
+| `windsurf` | `~/.codeium/windsurf/skills` | — |
+| `gemini` | `~/.gemini/skills` | — |
+
+The skill root that wins is the detected host's; if it doesn't exist, install falls
+back through the preference chain `agents → opencode → claude → cursor → codex →
+windsurf → gemini` and takes the first that exists.
+
+**Restart your agent afterwards** — skills only register at startup. In opencode the
+plugin also drops a pointer file (`~/.config/opencode/atelier-home`) recording where
+Atelier lives, so it can self-install later without being re-cloned.
 
 > **Self-installing.** Each `SKILL.md` carries an **AI Installation** section. When a router
 > is invoked on an incomplete stack, the agent is instructed to check and install what's
@@ -199,7 +231,7 @@ observability, or IaC skill. The router says so rather than implying coverage.
 ```
 atelier/
 ├── install.mjs                  installer + agent detection
-├── deps.json                    dependency manifest (118 skills)
+├── deps.json                    dependency manifest (8 routers · 110 deps · 105 skills)
 ├── .claude-plugin/plugin.json   Claude Code manifest
 ├── .opencode/plugins/atelier.ts opencode plugin (nudges on incomplete stacks)
 ├── skills/                      the 8 routers + references/

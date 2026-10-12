@@ -1,7 +1,7 @@
 # Atelier
 
 > Domain routers that dispatch agent skills to the right specialist.
-> Invoke one router. It pulls in the forty specialists it needs — the user never names a skill again.
+> Invoke one router. It dispatches to the specialists it needs — the user never names a skill again.
 
 Repository: https://github.com/vietnamtrainingpilot-oss/atelier
 Version: 1.0.0 · Licence: MIT · Node 18+
@@ -16,7 +16,7 @@ The plugin ships with **36 specialist skills bundled inside the repository** —
 upstream was never public, which therefore travels with the plugin rather than being fetched.
 The remaining 67 are cloned from public GitHub sources at install time.
 
-Total dependency surface: **118 skills across 8 routers**. Plugin payload: ~8MB.
+Total dependency surface: **105 skills across 8 routers** (110 dependency entries). Plugin payload: ~8MB.
 
 ## Install
 
@@ -53,6 +53,8 @@ The installer detects the host agent and writes to the correct skill root:
 | generic agents | `~/.agents/skills` |
 | cursor | `~/.cursor/skills` |
 | codex | `~/.codex/skills` |
+| windsurf | `~/.codeium/windsurf/skills` |
+| gemini | `~/.gemini/skills` |
 
 Override with `--agent <name>` or `--root <path>`.
 **Skills only register at agent startup — restart the agent after installing.**
@@ -62,8 +64,11 @@ Override with `--agent <name>` or `--root <path>`.
 | Flag | Effect |
 |---|---|
 | `--offline` | Private bundled skills only. Zero network requests. |
+| `--prefer-network` | Refresh public skills from upstream even when a bundled copy exists. |
 | `--check` | Report what would happen. Installs nothing. |
 | `--force` | Overwrite existing skills. |
+| `--agent <name>` | Target host: `opencode` · `claude` · `cursor` · `codex` · `agents` · `windsurf` · `gemini`. |
+| `--root <path>` | Install somewhere else entirely. |
 | `--list` | List routers and their dependency counts. |
 | `--json` | Machine-readable summary on stdout. |
 | `--in-place` | Install the routers into this repo instead of a skill root. |
@@ -141,7 +146,7 @@ Two skills are deliberately never bundled because of size: `img2threejs` (39.9MB
 ```
 atelier/
 ├── install.mjs                  installer, agent detection, offline-first resolution
-├── deps.json                    dependency manifest for all 118 skills
+├── deps.json                    dependency manifest for all 105 skills (110 entries)
 ├── llms.txt                     this file
 ├── README.md                    full documentation
 ├── BRAND.md                     naming, palette, voice

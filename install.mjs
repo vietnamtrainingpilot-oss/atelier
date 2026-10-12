@@ -112,6 +112,7 @@ function fromSkillRepo(entry) {
   const tmp = join(tmpRoot, skill || "repo")
   try {
     mkdirSync(tmpRoot, { recursive: true })
+    if (existsSync(tmp)) rmSync(tmp, { recursive: true, force: true })
     run("git", ["clone", "--depth", "1", `https://github.com/${repo}.git`, tmp])
 
     if (!skill) {
@@ -163,6 +164,7 @@ function fromGit(entry) {
   const tmp = join(tmpRoot, entry.skill)
   try {
     mkdirSync(dirname(tmp), { recursive: true })
+    if (existsSync(tmp)) rmSync(tmp, { recursive: true, force: true })
     run("git", ["clone", "--depth", "1", "--sparse", `https://github.com/${spec}.git`, tmp])
     run("git", ["-C", tmp, "sparse-checkout", "set", entry.subpath])
     const src = join(tmp, entry.subpath)
@@ -307,6 +309,40 @@ function installAgents(names) {
   }
 }
 
+/* ---------------------------------------------------------------- plugin */
+
+/**
+ * Register the opencode plugin so Atelier announces itself to the agent even
+ * when the runtime lives outside ~/.atelier.
+ *
+ * opencode loads local plugins from ~/.config/opencode/plugins/ (plural). Once
+ * atelier.ts is copied there it can no longer locate deps.json by a path
+ * relative to itself, so we also drop a pointer file (~/.config/opencode/
+ * atelier-home) that the plugin's resolveHome() reads.
+ */
+function installPlugin() {
+  if (agent !== "opencode" || IN_PLUGIN) return
+
+  const src = join(HERE, ".opencode", "plugins", "atelier.ts")
+  if (!existsSync(src)) return
+
+  const cfg = join(homedir(), ".config", "opencode")
+  const dest = join(cfg, "plugins", "atelier.ts")
+
+  if (CHECK_ONLY) {
+    console.log(c.dim(`    plugin: would register ${dest}`))
+    console.log(c.dim(`    plugin: would point ${join(cfg, "atelier-home")} at ${HERE}`))
+    return
+  }
+
+  mkdirSync(dirname(dest), { recursive: true })
+  cpSync(src, dest, { recursive: true })
+  writeFileSync(join(cfg, "atelier-home"), HERE, "utf8")
+  R.bundled.push("atelier (plugin)")
+  console.log(c.dim(`    plugin: registered ${dest}`))
+  console.log(c.dim(`    plugin: runtime pointer -> ${HERE}`))
+}
+
 function reportMcp(mcps) {
   if (!mcps?.length) return
   console.log(c.c("\n  Optional MCP servers — paste into your agent config:"))
@@ -322,10 +358,11 @@ function reportMcp(mcps) {
 if (LIST) {
   console.log(c.b(`\n  Atelier ${deps.version} — routers\n`))
   for (const [k, v] of Object.entries(deps.routers)) {
-    const auto = v.requires.filter((e) => e.source !== "manual")
-    const bun = auto.filter((e) => isBundled(e.skill)).length
+    const bun = v.requires.filter((e) => isBundled(e.skill)).length
+    const fetched = v.requires.filter((e) => e.source !== "manual" && !isBundled(e.skill)).length
+    const absent = v.requires.filter((e) => e.source === "manual" && !isBundled(e.skill)).length
     console.log(`  ${c.c(k.padEnd(18))} ${v.summary}`)
-    console.log(c.dim(`  ${"".padEnd(18)} ${v.requires.length} skills · ${bun} bundled · ${auto.length - bun} fetched${v.mcp ? ` · ${v.mcp.length} MCP` : ""}`))
+    console.log(c.dim(`  ${"".padEnd(18)} ${v.requires.length} skills · ${bun} bundled · ${fetched} fetched${absent ? ` · ${absent} excluded` : ""}${v.mcp ? ` · ${v.mcp.length} MCP` : ""}`))
   }
   console.log()
   process.exit(0)
@@ -345,9 +382,9 @@ if (!CHECK_ONLY) mkdirSync(ROOT, { recursive: true })
 
 for (const name of names) {
   const r = deps.routers[name]
-  const auto = r.requires.filter((e) => e.source !== "manual")
-  const bun = auto.filter((e) => isBundled(e.skill)).length
-  console.log(c.b(`  ${name}`) + c.dim(`  — ${r.title}  (${bun} bundled / ${auto.length - bun} fetch)`))
+  const bun = r.requires.filter((e) => isBundled(e.skill)).length
+  const fetched = r.requires.filter((e) => e.source !== "manual" && !isBundled(e.skill)).length
+  console.log(c.b(`  ${name}`) + c.dim(`  — ${r.title}  (${bun} bundled / ${fetched} fetch)`))
   for (const e of r.requires) installEntry(e)
   if (r.agents) installAgents(r.agents)
   installRouter(name)
@@ -355,6 +392,7 @@ for (const name of names) {
   if (r.notes) console.log(c.y(`    note: ${r.notes}`))
 }
 
+installPlugin()
 if (!CHECK_ONLY) runPostInstall()
 reportMcp(names.flatMap((n) => deps.routers[n].mcp ?? []))
 

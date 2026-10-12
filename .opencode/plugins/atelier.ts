@@ -13,7 +13,48 @@ import { homedir } from "node:os"
 import { join } from "node:path"
 
 const ROOT = join(homedir(), ".config", "opencode", "skills")
-const DEPS = join(import.meta.dirname ?? ".", "..", "..", "deps.json")
+const CFG = join(homedir(), ".config", "opencode")
+
+/**
+ * Locate the Atelier runtime — the directory holding deps.json, install.mjs and
+ * bundled/ skills. The installer copies this plugin into
+ * ~/.config/opencode/plugins/, so it can no longer assume a path relative to
+ * itself. First hit wins:
+ *   1. $ATELIER_HOME
+ *   2. the pointer file the installer writes (repo can live anywhere)
+ *   3. repo layout, when loaded from <repo>/.opencode/plugins/ in the source tree
+ *   4. ~/.atelier — default clone location of the one-line installer
+ *   5. ~/.config/opencode/atelier — canonical runtime copy, if present
+ */
+function resolveHome(): string | null {
+  const here = import.meta.dirname
+  const candidates: (string | undefined)[] = [
+    process.env.ATELIER_HOME,
+    (() => {
+      try {
+        return readFileSync(join(CFG, "atelier-home"), "utf8").trim()
+      } catch {
+        return undefined
+      }
+    })(),
+    here && join(here, "..", ".."),
+    join(homedir(), ".atelier"),
+    join(CFG, "atelier"),
+  ]
+  for (const d of candidates) {
+    if (!d) continue
+    try {
+      if (existsSync(join(d, "deps.json"))) return d
+    } catch {
+      /* unreadable candidate — keep looking */
+    }
+  }
+  return null
+}
+
+const HOME_DIR = resolveHome()
+const DEPS = join(HOME_DIR ?? join(import.meta.dirname ?? ".", "..", ".."), "deps.json")
+const INSTALL_CMD = HOME_DIR ? `node "${join(HOME_DIR, "install.mjs")}"` : "node install.mjs"
 
 /** Which routers does this turn actually touch? */
 const ROUTERS = [
@@ -61,8 +102,8 @@ export default (async ({}) => {
           ROUTERS.map((r) => `  - \`${r}\` — ${deps?.routers?.[r]?.summary ?? ""}`).join("\n"),
           "",
           "Each router carries an **AI Installation** section. Before its first real task, check",
-          "its dependencies and run `node install.mjs <router>` from the Atelier plugin root if",
-          "anything is missing. Do not silently proceed with a partial stack.",
+          `its dependencies and run \`${INSTALL_CMD} <router>\` if anything is missing.`,
+          "Do not silently proceed with a partial stack.",
         ].join("\n"),
       )
     },
@@ -85,7 +126,7 @@ export default (async ({}) => {
             "",
             `[atelier] \`${name}\` is missing ${missing.length} dependency skill(s):`,
             `  ${missing.slice(0, 12).join(", ")}${missing.length > 12 ? ", …" : ""}`,
-            `Run:  node install.mjs ${name}`,
+            `Run:  ${INSTALL_CMD} ${name}`,
           ].join("\n")
         } else {
           warned.add(name)

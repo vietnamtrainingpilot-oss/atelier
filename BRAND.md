@@ -67,7 +67,7 @@ The serif/sans split is the whole brand in one decision: craft on top, machinery
 ## Badge
 
 ```
-⌂ Atelier · 8 routers · 118 skills
+⌂ Atelier · 8 routers · 105 skills
 ```
 
 ---
