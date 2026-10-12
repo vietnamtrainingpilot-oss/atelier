@@ -12,7 +12,7 @@
     {
       "name": "atelier",
       "source": "./",
-      "description": "Eight domain routers — web-design, video-production, seo, backend, payments, security, vibe-code, ship-it — that each dispatch to their own set of specialist skills. Ships with 103 skills bundled for offline install.",
+      "description": "Eight domain routers — web-design, video-production, seo, backend, payments, security, vibe-code, ship-it — that each dispatch to their own set of specialist skills. 118 skills in total: 36 ship bundled for offline install, the other 67 are fetched from public sources.",
       "version": "1.0.0",
       "author": { "name": "Atelier" },
       "homepage": "https://github.com/vietnamtrainingpilot-oss/atelier",

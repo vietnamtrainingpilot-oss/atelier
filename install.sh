@@ -3,8 +3,9 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/vietnamtrainingpilot-oss/atelier/main/install.sh | bash
 #
-# Clones the repo to a temp dir and runs the installer. The plugin ships 103 skills
-# bundled, so this works even if the upstream skills are unreachable.
+# Clones the repo to a temp dir and runs the installer. The plugin ships 36 skills
+# bundled and fetches the other 67 from public sources, so the bundled core works
+# even if upstream is unreachable.
 set -euo pipefail
 
 REPO="${ATELIER_REPO:-https://github.com/vietnamtrainingpilot-oss/atelier}"
